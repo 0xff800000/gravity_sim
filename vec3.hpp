@@ -16,6 +16,8 @@ public:
 	void rotZ(float);
 	void scale(float);
 
+    float distance(vec3& v);
+
 	void print();
 	void assign(float,float,float);
 	bool disp2D();

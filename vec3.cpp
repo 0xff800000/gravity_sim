@@ -25,6 +25,14 @@ void vec3::scale(float coef){
 	this->z*=coef;
 }
 
+float vec3::distance(vec3& v) {
+    float dx,dy,dz;
+    dx = this->x - v.x;
+    dy = this->y - v.y;
+    dz = this->z - v.z;
+    return (float) sqrt(dx*dx + dy*dy + dz*dz);
+}
+
 void vec3::print(){
     std::cout<<"("<<this->x<<","<<this->y<<","<<this->z<<")"<<std::endl;
 }

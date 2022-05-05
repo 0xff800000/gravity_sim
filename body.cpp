@@ -12,6 +12,14 @@ void DrawCircle(float cx, float cy, float r, int num_segments) {
 }
 
 
+void Body::set_moveable(bool mov) {
+    this->moveable = mov;
+}
+
+void Body::set_radius(float r) {
+    this->radius = r;
+}
+
 void Body::set_bodies(std::vector<Body> * b) {
     this->bodies = b;
 }
@@ -41,14 +49,32 @@ void Body::compute_force() {
     this->force = new_force;
 }
 
+bool Body::check_collisions(vec3 new_pos) {
+    for(auto& body: *(this->bodies)) {
+        // Discard itself
+        if(&body == this)
+            continue;
+
+        // Check collisions
+        float min_dist = this->radius + body.radius;
+        if(this->position.distance(body.position) <= min_dist) {
+            return true;
+        }
+    }
+    return false;
+}
+
 
 void Body::move(float delta_t) {
+    if(this->moveable == false) return;
     // Update the velocity
     vec3 acceleration = this->force / this->mass;
     this->velocity += acceleration * delta_t;
 
     // Update position
-    this->position += this->velocity * delta_t;
+    vec3 displacement = this->velocity * delta_t;
+    //if(!this->check_collisions(this->position + displacement))
+        this->position += displacement;
 }
 
 void Body::update_draw() {
